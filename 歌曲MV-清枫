@@ -1,0 +1,50 @@
+/**
+* @author 清枫
+* @create_at 2022-09-08 22:39:49
+* @public true
+* @description 🐒MV合集，包含QQ音乐、酷狗音乐MV，默认设置QQ音乐。
+* @version v1.0.0
+* @title 歌曲MV
+* @platform qq wx tg pgm web cron
+* @rule 我想听?
+* @rule 我想听 ?
+* @rule 想听?
+* @rule 想听 ?
+* @priority 100
+
+* @admin false
+*/
+
+
+//sender
+const s = sender
+
+ 
+
+function main() {
+    var name = s.param(1) //匹配规则第一个问号的值
+
+    var {body} = request({ // 内置http请求函数
+        "url": "https://xiaoapi.cn/API/mv.php?type=qq&msg=" + name + "&n=1", //如果要酷狗平台，则把type改为kg
+        "method": "get", //请求方法
+        "dataType": "json", //这里接口直接返回文本，所以不需要指定json类型数据
+    })
+
+
+ if(body.code == 201 ){
+		s.reply("查无 "+ name + " MV")
+
+ }
+ if(body.code == 200 ){
+ 	var list = body.data;
+	data = 
+		"歌名：" + list.mv_name + 
+		"\n作者：" +list.mv_singer + 
+		"\nMV地址：" + list.url
+		s.reply(`${data}${image(list.pic)}`)
+     }
+
+}
+  
+
+main()
