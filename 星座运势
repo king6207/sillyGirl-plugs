@@ -1,0 +1,57 @@
+/**
+* @author 清枫
+* @create_at 2022-07-09 21:46:26
+* @description 🐸查询星座运势，需要去天行网站申请星座运势api，再输入key才可以正常使用
+* @version v1.0.0
+* @title 星座运势
+* @platform qq wx tg pgm web cron
+* @rule ?运势
+* @priority 100
+* @admin false
+* @public true
+*/
+
+/*
+var a=(new Bucket("b")).get("c");//存储桶释义：b是存储桶名字，c是存储桶的键名，a就是取值存储桶b中键名为c的对应值
+*/
+
+const s = sender
+
+var astro=encodeURI(s.param(1))
+var str=""
+
+//key设置指令：set tianapi key xxxxxxxxx
+var tianapi_key = (new Bucket("tianapi")).get("key");//天行数据申请的key网站https://www.tianapi.com/，要先申请星座运势的api接口，没有申请这个接口，提供的key便无效。
+
+
+//s.reply(`${Bucket("tianapi").get("key")}`)//读取天行api的key值
+//s.reply(tianapi_key)等同于上一条
+
+
+
+
+
+function main() {
+
+  var content = request({
+    // 内置http请求函数
+    "url":"http://api.tianapi.com/star/index?key="+tianapi_key+"&astro="+astro,//请求链接
+    "method": "get", //请求方法
+    "dataType": "json", //这里接口直接返回文本，所以不需要指定json类型数据
+  }).body
+
+  if (content["code"] == 200){
+
+    content=content.newslist
+    for (var i=0;i<9;i++){
+      tempstr=content[i].type + " : " +content[i].content+"\n"
+      str+=tempstr
+    }
+    s.reply(str)
+  } 
+  else {
+    s.reply(content.msg)
+  }
+}
+
+main()
