@@ -1,0 +1,70 @@
+/**
+* @author 清枫
+* @version v1.0.0
+* @title 地区疫情查询-清枫
+* @public true
+* @create_at 2022-09-07 17:27:21
+* @description 
+* @platform qq wx tg pgm web cron
+* @rule ^疫情(.*)$
+* @rule ?疫情
+* @priority 100
+* @admin false
+*/
+
+
+const s = sender
+var abc = 0
+
+function main() {
+
+    var address = s.param(1) 
+//    一下这个带有while的是适用走科学上网路线的，科学上网的傻妞有时无法正常访问
+
+    var abc = 0
+    while(abc<60){          //检测是否正常联通网址，获取到正确的body数据，最多循环60次，可自行修改次数，并同步修改下方超时提醒
+        abc = abc + 1
+        var {body} = request({ 
+            "url": "https://xiaobai.klizi.cn/API/other/yiqing.php?city=" + address + "&format=json",  //请求地址
+            "method": "get",   //请求方式
+            "dataType": "json"   //返回格式
+        })
+
+        if(body)
+            if(body.code == 200)
+                break
+
+    }
+    if(abc>= 60)
+        s.reply('抱歉，获取数据超时，请重试')
+
+//以下是国内机正常使用使用，亦可以使用上面那个        
+/**************************************
+    var {body} = request({ 
+        "url": "https://xiaobai.klizi.cn/API/other/yiqing.php?city=" + address + "&format=json",  //请求地址
+        "method": "get",   //请求方式
+        "dataType": "json"   //返回格式
+    })
+
+**************************************/
+
+//一下是公用部分，无需动
+    var aaa = body.code
+    if(aaa == 200){
+        var list = body.data
+      s.reply("查询地区:" + list.城市+
+        "\n目前确诊：" + list.积累确诊 +
+        "\n死亡人数：" +  list.死亡 + 
+        "\n治愈人数："+ list.治愈 +
+        "\n现存确诊:"+ list.现存确诊 +
+        "\n现存无症状:"+ list.现存无症状 +
+        "\n更新时间:"+ body.UpTime)
+
+    }
+    else{
+
+        s.reply('狗日了，又出故障了')
+    }
+
+}
+main()
