@@ -1,0 +1,26 @@
+/**
+* @author 清枫
+* @version v1.0.0
+* @title 整点音乐报时
+* @public true
+* @create_at 2022-09-07 17:27:21
+* @description 
+* @platform qq wx tg pgm web cron
+* @rule 整点
+* @priority 100
+* @admin false
+*/
+
+
+const s=sender
+
+//var url="https://api.ooomn.com/api/bsyy?sj=00&type=json"
+
+var {body} = request({ 
+    "url": "https://api.ooomn.com/api/bsyy?sj=&type=json",  //请求地址
+    "method": "get",   //请求方式
+    "dataType": "json"   //返回格式
+})
+
+if(body.code == 200)
+s.reply(body.url)
