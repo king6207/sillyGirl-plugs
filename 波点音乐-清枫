@@ -1,0 +1,49 @@
+/**
+* @author 清枫
+* @create_at 2022-09-08 22:39:49
+* @public true
+* @description 🐒这个人很懒什么都没有留下。
+* @version v1.0.0
+* @title 波点音乐
+* @platform qq wx tg pgm web cron
+* @rule 来一首?
+* @rule 来一首 ?
+* @priority 100
+
+* @admin false
+*/
+
+
+//sender
+const s = sender
+
+ 
+
+function main() {
+    var address = s.param(1) //匹配规则第一个问号的值
+
+    var {body} = request({ // 内置http请求函数
+        "url": "http://xiaobai.klizi.cn/API/music/bodian.php?msg=" + address + "&n=1&max=", //请求链接
+        "method": "get", //请求方法
+        "dataType": "json", //这里接口直接返回文本，所以不需要指定json类型数据
+    })
+ var list = body;
+
+ if(list.highUrl ==null | list.highUrl == ""){
+	 if(list.lowUrl ==null | list.lowUrl == "")
+		s.reply("查无 "+ address + " MV")
+	else
+		list.highUrl=list.lowUrl
+		}
+ else{
+	data = 
+		"歌名：" + list.songName + 
+		"\n作者：" +list.artist + 
+		"\nMV地址：" + list.highUrl
+		s.reply(`${data}${image(list.coverUrl)}`)
+     }
+
+}
+  
+
+main()
