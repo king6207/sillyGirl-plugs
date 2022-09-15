@@ -32,7 +32,9 @@ var tianapi_key = (new Bucket("tianapi")).get("key");//天行数据申请的key�
 
 
 function main() {
-
+    if (!tianapi_key) {
+       s.reply("请前往https://www.tianapi.com/ 申请星座运势api\n申请完后发送指令：set tianapi key xxxxxxxxx \n其中xxxx便是你的天行key。")
+    }
   var content = request({
     // 内置http请求函数
     "url":"http://api.tianapi.com/star/index?key="+tianapi_key+"&astro="+astro,//请求链接
