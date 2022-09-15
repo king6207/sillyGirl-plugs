@@ -1,0 +1,43 @@
+/**
+* @author 清枫
+* @version v1.0.0
+* @create_at 2022-09-08 09:12:15
+* @public true
+* @description 🐒这个人很懒什么都没有留下。
+* @title 指定类型图片输出
+* @platform qq wx tg pgm web cron
+* @rule raw (女仆|jk制服|兔女郎|夏日泳装|动漫类|幼齿|萝莉|少女|御姐|巨乳|丰满微胖|黑丝|白丝|肉丝|网丝|吊带袜|腿控|脚控|臀控|旗袍)
+* @priority 100
+* @cron 0 20 8 8 *
+* @admin false
+*/
+
+
+
+
+//sender
+const s = sender
+
+
+//s.reply(s.param(1)) //检测输入参数
+
+function main(){
+    var {body} = request({
+        url:"https://api.uomg.com/api/rand.img4?sort=" + s.param(1) + "&format=json",  //http://api.uomg.com/api/rand.img4",
+        method:"get",
+        allowredirects: false, //禁止重定向
+        dataType: "json"
+        })
+    console.info(body)
+
+    var data = ""
+    if(body.code == 1){
+        var list=body.imgurl[0]
+        data = list        
+
+    }
+    s.reply(`${image(data)}`)
+    
+}
+
+main()
