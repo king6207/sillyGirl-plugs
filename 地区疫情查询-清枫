@@ -4,7 +4,7 @@
 * @title 地区疫情查询-清枫
 * @public true
 * @create_at 2022-09-07 17:27:21
-* @description 
+* @description 地区疫情数据查询，国外机不是很友好
 * @platform qq wx tg pgm web cron
 * @rule ^疫情(.*)$
 * @rule ?疫情
